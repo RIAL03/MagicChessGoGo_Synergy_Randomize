@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Chess Synergy Randomizer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c20, #15102a, #060214);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff7b00, #ffae00, #00e1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 123, 0, 0.2);
+        }
+
+        .display-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card.active {
+            border-color: #ffae00;
+            box-shadow: 0 0 15px rgba(255, 174, 0, 0.2);
+        }
+
+        .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f0f0f0;
+            min-height: 2rem;
+        }
+
+        .value.highlight-faction {
+            color: #ff7b00;
+        }
+
+        .value.highlight-role {
+            color: #00e1ff;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff7b00, #ffae00);
+            color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 123, 0, 0.4);
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 123, 0, 0.6);
+            background: linear-gradient(45deg, #ffae00, #ffcb6b);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Synergy Randomizer</h1>
+        
+        <div class="display-area">
+            <div class="card" id="factionCard">
+                <div class="label">Faction</div>
+                <div class="value highlight-faction" id="factionResult">?</div>
+            </div>
+            
+            <div class="card" id="roleCard">
+                <div class="label">Role</div>
+                <div class="value highlight-role" id="roleResult">?</div>
+            </div>
+        </div>
+
+        <button onclick="rollSynergy()">Acak Sinergi</button>
+    </div>
+
+    <script>
+        // Data dari yang kamu berikan
+        const factions = [
+            "Emberlord", 
+            "Astro Power", 
+            "Heartbound", 
+            "Dragoncaller", 
+            "Exorcist", 
+            "Neobeast", 
+            "Enchanted Tales", 
+            "Mystic Meow", 
+            "Northernvale"
+        ];
+
+        const roles = [
+            "Bruiser", 
+            "Defender", 
+            "Dauntless", 
+            "Weapon Master", 
+            "Marksman", 
+            "Stargazer", 
+            "Swiftblade", 
+            "Mage", 
+            "Phaseswaper", 
+            "Scavenger"
+        ];
+
+        function rollSynergy() {
+            const factionResult = document.getElementById('factionResult');
+            const roleResult = document.getElementById('roleResult');
+            const factionCard = document.getElementById('factionCard');
+            const roleCard = document.getElementById('roleCard');
+
+            // Efek visual acak cepat (gacha effect) sebelum berhenti
+            let counter = 0;
+            const interval = setInterval(() => {
+                factionResult.innerText = factions[Math.floor(Math.random() * factions.length)];
+                roleResult.innerText = roles[Math.floor(Math.random() * roles.length)];
+                counter++;
+
+                if (counter > 10) {
+                    clearInterval(interval);
+                    
+                    // Hasil Akhir yang Sebenarnya
+                    const finalFaction = factions[Math.floor(Math.random() * factions.length)];
+                    const finalRole = roles[Math.floor(Math.random() * roles.length)];
+
+                    factionResult.innerText = finalFaction;
+                    roleResult.innerText = finalRole;
+
+                    // Tambah efek aktif sementara waktu
+                    factionCard.classList.add('active');
+                    roleCard.classList.add('active');
+
+                    setTimeout(() => {
+                        factionCard.classList.remove('active');
+                        roleCard.classList.remove('active');
+                    }, 500);
+                }
+            }, 50);
+        }
+    </script>
+</body>
+</html>
