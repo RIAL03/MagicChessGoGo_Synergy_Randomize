@@ -80,11 +80,11 @@
             min-height: 2rem;
         }
 
-        .value.highlight-faction {
+        .value.highlight-1 {
             color: #ff7b00;
         }
 
-        .value.highlight-role {
+        .value.highlight-2 {
             color: #00e1ff;
         }
 
@@ -121,14 +121,14 @@
         <h1>Synergy Randomizer</h1>
         
         <div class="display-area">
-            <div class="card" id="factionCard">
-                <div class="label">Faction</div>
-                <div class="value highlight-faction" id="factionResult">?</div>
+            <div class="card" id="synergy1Card">
+                <div class="label">Sinergi</div>
+                <div class="value highlight-1" id="synergy1Result">?</div>
             </div>
             
-            <div class="card" id="roleCard">
-                <div class="label">Role</div>
-                <div class="value highlight-role" id="roleResult">?</div>
+            <div class="card" id="synergy2Card">
+                <div class="label">Sinergi</div>
+                <div class="value highlight-2" id="synergy2Result">?</div>
             </div>
         </div>
 
@@ -136,62 +136,56 @@
     </div>
 
     <script>
-        // Data dari yang kamu berikan
-        const factions = [
-            "Emberlord", 
-            "Astro Power", 
-            "Heartbound", 
-            "Dragoncaller", 
-            "Exorcist", 
-            "Neobeast", 
-            "Enchanted Tales", 
-            "Mystic Meow", 
-            "Northernvale"
+        // Data faction dan role digabungkan
+        const allSynergies = [
+            "Emberlord", "Astro Power", "Heartbound", "Dragoncaller", 
+            "Exorcist", "Neobeast", "Enchanted Tales", "Mystic Meow", 
+            "Northernvale", "Bruiser", "Defender", "Dauntless", 
+            "Weapon Master", "Marksman", "Stargazer", "Swiftblade", 
+            "Mage", "Phaseswaper", "Scavenger"
         ];
 
-        const roles = [
-            "Bruiser", 
-            "Defender", 
-            "Dauntless", 
-            "Weapon Master", 
-            "Marksman", 
-            "Stargazer", 
-            "Swiftblade", 
-            "Mage", 
-            "Phaseswaper", 
-            "Scavenger"
-        ];
+        // Fungsi untuk mendapatkan 2 index berbeda
+        function getTwoDistinctIndices(max) {
+            let index1 = Math.floor(Math.random() * max);
+            let index2;
+            do {
+                index2 = Math.floor(Math.random() * max);
+            } while (index1 === index2);
+            return [index1, index2];
+        }
 
         function rollSynergy() {
-            const factionResult = document.getElementById('factionResult');
-            const roleResult = document.getElementById('roleResult');
-            const factionCard = document.getElementById('factionCard');
-            const roleCard = document.getElementById('roleCard');
+            const synergy1Result = document.getElementById('synergy1Result');
+            const synergy2Result = document.getElementById('synergy2Result');
+            const synergy1Card = document.getElementById('synergy1Card');
+            const synergy2Card = document.getElementById('synergy2Card');
 
             // Efek visual acak cepat (gacha effect) sebelum berhenti
             let counter = 0;
             const interval = setInterval(() => {
-                factionResult.innerText = factions[Math.floor(Math.random() * factions.length)];
-                roleResult.innerText = roles[Math.floor(Math.random() * roles.length)];
+                const tempIndices = getTwoDistinctIndices(allSynergies.length);
+                
+                synergy1Result.innerText = allSynergies[tempIndices[0]];
+                synergy2Result.innerText = allSynergies[tempIndices[1]];
                 counter++;
 
                 if (counter > 10) {
                     clearInterval(interval);
                     
-                    // Hasil Akhir yang Sebenarnya
-                    const finalFaction = factions[Math.floor(Math.random() * factions.length)];
-                    const finalRole = roles[Math.floor(Math.random() * roles.length)];
+                    // Hasil Akhir yang Sebenarnya (dipastikan 2 sinergi berbeda)
+                    const finalIndices = getTwoDistinctIndices(allSynergies.length);
 
-                    factionResult.innerText = finalFaction;
-                    roleResult.innerText = finalRole;
+                    synergy1Result.innerText = allSynergies[finalIndices[0]];
+                    synergy2Result.innerText = allSynergies[finalIndices[1]];
 
                     // Tambah efek aktif sementara waktu
-                    factionCard.classList.add('active');
-                    roleCard.classList.add('active');
+                    synergy1Card.classList.add('active');
+                    synergy2Card.classList.add('active');
 
                     setTimeout(() => {
-                        factionCard.classList.remove('active');
-                        roleCard.classList.remove('active');
+                        synergy1Card.classList.remove('active');
+                        synergy2Card.classList.remove('active');
                     }, 500);
                 }
             }, 50);
